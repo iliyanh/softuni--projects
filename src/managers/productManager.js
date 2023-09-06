@@ -1,10 +1,11 @@
 const product = []
+const uniqid = require("uniqid");
 
 exports.getAll = () => product.slice();
 
 exports.create = (productData) => {
     const newProduct = {
-        id: product.length + 1,
+        id: uniqid(),
         ...productData
     }
     product.push(newProduct)

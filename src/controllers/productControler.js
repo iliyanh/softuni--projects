@@ -7,11 +7,12 @@ router.get("/create", (req, res) => {
 })
 
 router.post("/create", (req, res) => {
+    console.log(req.body);
     const {
         name,
         description,
         imageUrl,
-        diffculty,
+        difficultyLevel,
     }
         = req.body;
 
@@ -19,7 +20,7 @@ router.post("/create", (req, res) => {
         name,
         description,
         imageUrl,
-        diffculty: Number(diffculty)
+        difficultyLevel: Number(difficultyLevel),
     })
 
     res.redirect("/")

@@ -7,7 +7,6 @@ router.get("/create", (req, res) => {
 })
 
 router.post("/create", (req, res) => {
-    console.log(req.body);
     const {
         name,
         description,
@@ -25,6 +24,12 @@ router.post("/create", (req, res) => {
 
     res.redirect("/")
 })
+router.get("/:cubeId/details", (req, res) => {
+    
+    const cube = productManager.getOne(req.params.cubeId)
+    console.log(req.params);
+    res.render("details", { cube })
+}) 
 
 
 module.exports = router;

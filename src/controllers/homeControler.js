@@ -4,8 +4,8 @@ const productManager = require("../managers/productManager");
 
 router.get("/", (req, res) => {
 
-    const product = productManager.getAll()
-    res.render("index", { product })
+    const cubes = productManager.getAll()
+    res.render("index", { cubes })
 })
 
 router.get("/about", (req, res) => {

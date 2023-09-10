@@ -2,9 +2,9 @@ const router = require("express").Router();
 const productManager = require("../managers/productManager");
 
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     const { search, from, to} = req.query
-    const cubes = productManager.getAll(search, from, to)
+    const cubes = await productManager.getAll(search, from, to)
     res.render("index", { cubes, search, from, to })
 })
 

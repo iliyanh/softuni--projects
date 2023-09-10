@@ -6,7 +6,7 @@ router.get("/create", (req, res) => {
     res.render("create")
 })
 
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
     const {
         name,
         description,
@@ -15,7 +15,7 @@ router.post("/create", (req, res) => {
     }
         = req.body;
 
-    productManager.create({
+    await productManager.create({
         name,
         description,
         imageUrl,
@@ -24,9 +24,9 @@ router.post("/create", (req, res) => {
 
     res.redirect("/")
 })
-router.get("/:cubeId/details", (req, res) => {
+router.get("/:cubeId/details", async (req, res) => {
     
-    const cube = productManager.getOne(req.params.cubeId)
+    const cube = await productManager.getOne(req.params.cubeId).lean()
    if(!cube){
     return res.redirect("/404")
    }

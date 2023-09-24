@@ -50,6 +50,12 @@ router.post("/:cubeId/attach-accessory", async (req, res) => {
     res.redirect(`/cubes/${cubeId}/details`)
 
 })
-
+router.get("/:cubeId/delete", async(req,res) => {
+    const cube = await productManager.getOne(req.params.cubeId).lean()
+    res.render("delete", {cube})
+})
+router.get("/:cubeId/edit", async(req,res) => {
+    res.render("edit")
+})
 
 module.exports = router;

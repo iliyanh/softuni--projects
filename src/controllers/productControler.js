@@ -70,7 +70,8 @@ function getDifficultyOptions(difficultyLevel){
 
 router.get("/:cubeId/delete", async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
-    res.render("delete", {cube})
+    const options = getDifficultyOptions(cube.difficultyLevel)
+    res.render("delete", {cube, options})
 })
 router.post("/:cubeId/delete", async(req,res) => {
     await productManager.delete(req.params.cubeId);

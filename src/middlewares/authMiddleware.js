@@ -6,7 +6,7 @@ exports.auth = async (req, res, next) => {
 
     if(token) {
         try {
-            const user = jwt.verify(token, SECRET)
+            const user = await jwt.verify(token, SECRET)
             req.user = user;
             next()
         } catch (error) {

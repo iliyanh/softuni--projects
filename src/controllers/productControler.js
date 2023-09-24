@@ -50,6 +50,24 @@ router.post("/:cubeId/attach-accessory", async (req, res) => {
     res.redirect(`/cubes/${cubeId}/details`)
 
 })
+
+function getDifficultyOptions(difficultyLevel){
+    const titles = [
+        "Very Easy",
+        "Easy",
+        "Medium (Standard 3x3)",
+        "Intermediate",
+        "Expert",
+        "Hardcore",
+    ]
+    const options = titles.map((title, index) => ({
+        title: `${index + 1} - ${title}`,
+        value: index+1,
+        selected: Number(difficultyLevel) === index+1,
+    }))
+    return options
+}
+
 router.get("/:cubeId/delete", async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
     res.render("delete", {cube})
@@ -62,12 +80,15 @@ router.post("/:cubeId/delete", async(req,res) => {
 
 router.get("/:cubeId/edit", async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
-    res.render("edit", {cube})
+    const options = getDifficultyOptions(cube.difficultyLevel)
+    res.render("edit", {cube, options})
 })
 router.post("/:cubeId/edit", async(req,res) => {
     const cubeData = req.body;
     await productManager.update(req.params.cubeId, cubeData);
     res.redirect(`/cubes/${req.params.cubeId}/details`);
 })
+
+
 
 module.exports = router;

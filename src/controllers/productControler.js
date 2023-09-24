@@ -54,8 +54,20 @@ router.get("/:cubeId/delete", async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
     res.render("delete", {cube})
 })
+router.post("/:cubeId/delete", async(req,res) => {
+    await productManager.delete(req.params.cubeId);
+    res.redirect("/");
+})
+
+
 router.get("/:cubeId/edit", async(req,res) => {
-    res.render("edit")
+    const cube = await productManager.getOne(req.params.cubeId).lean()
+    res.render("edit", {cube})
+})
+router.post("/:cubeId/edit", async(req,res) => {
+    const cubeData = req.body;
+    await productManager.update(req.params.cubeId, cubeData);
+    res.redirect(`/cubes/${req.params.cubeId}/details`);
 })
 
 module.exports = router;

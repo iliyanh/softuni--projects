@@ -3,7 +3,7 @@ const productManager = require("../managers/productManager");
 const accessoryManager = require("../managers/accessoryManager");
 
 router.get("/create", (req, res) => {
-    console.log(productManager.getAll());
+    console.log(req.user);
     res.render("create")
 })
 

@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const productManager = require("../managers/productManager");
 const accessoryManager = require("../managers/accessoryManager");
+const {isAuth} = require("../middlewares/authMiddleware");
 
-router.get("/create", (req, res) => {
+router.get("/create", isAuth, (req, res) => {
     console.log(req.user);
     res.render("create")
 })
 
-router.post("/create", async (req, res) => {
+router.post("/create", isAuth, async (req, res) => {
     const {
         name,
         description,
@@ -37,7 +38,7 @@ router.get("/:cubeId/details", async (req, res) => {
    
     res.render("details", { cube , isOwner})
 }) 
-router.get("/:cubeId/attach-accessory", async (req , res) => {
+router.get("/:cubeId/attach-accessory", isAuth,async (req , res) => {
 
     const cube = await productManager.getOne(req.params.cubeId).lean();
     const accessories = await accessoryManager.getOthers(cube.accessories).lean();
@@ -45,7 +46,7 @@ router.get("/:cubeId/attach-accessory", async (req , res) => {
 
     res.render("accessories/attach", {cube, accessories, hasAccessories});
 })
-router.post("/:cubeId/attach-accessory", async (req, res) => {
+router.post("/:cubeId/attach-accessory", isAuth,async (req, res) => {
     const { accessory } = req.body;
 
     const cubeId = req.params.cubeId;
@@ -71,23 +72,23 @@ function getDifficultyOptions(difficultyLevel){
     return options
 }
 
-router.get("/:cubeId/delete", async(req,res) => {
+router.get("/:cubeId/delete", isAuth,async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
     const options = getDifficultyOptions(cube.difficultyLevel)
     res.render("delete", {cube, options})
 })
-router.post("/:cubeId/delete", async(req,res) => {
+router.post("/:cubeId/delete", isAuth,async(req,res) => {
     await productManager.delete(req.params.cubeId);
     res.redirect("/");
 })
 
 
-router.get("/:cubeId/edit", async(req,res) => {
+router.get("/:cubeId/edit", isAuth,async(req,res) => {
     const cube = await productManager.getOne(req.params.cubeId).lean()
     const options = getDifficultyOptions(cube.difficultyLevel)
     res.render("edit", {cube, options})
 })
-router.post("/:cubeId/edit", async(req,res) => {
+router.post("/:cubeId/edit", isAuth,async(req,res) => {
     const cubeData = req.body;
     await productManager.update(req.params.cubeId, cubeData);
     res.redirect(`/cubes/${req.params.cubeId}/details`);

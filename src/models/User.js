@@ -3,8 +3,24 @@ const bcrypt = require("bcrypt");
 
 
 const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        required: true,
+        minLength: 5,
+        match: /^[A-Za-z0-9]+$/,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function(value){
+                return /^[A-Za-z0-9]+$/
+            },
+            message: "Invalid Password!"
+        },
+        minLength: 8,
+    }
 })
 
 userSchema.virtual("repeatPassword")
